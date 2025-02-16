@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class EndeffectorSubsystem extends SubsystemBase{
 
@@ -19,9 +24,15 @@ public class EndeffectorSubsystem extends SubsystemBase{
     SparkMax IntakeWheelsUSparkmax = new SparkMax(21, MotorType.kBrushless);
     SparkMax IntakeWheelsLSparkmax = new SparkMax(22, MotorType.kBrushless);
 
+    private RelativeEncoder m_encoder = IntakeArmSparkmax.getEncoder();
+
+    private SparkClosedLoopController m_pidController = IntakeArmSparkmax.getClosedLoopController();
+
     laserSubsystem laserSubsystem = new laserSubsystem();
 
-    public EndeffectorSubsystem() {}
+    public EndeffectorSubsystem() {
+        m_pidController.setReference(0, ControlType.kPosition);
+    }
 
     public boolean getIntakeCoralStatus() {
         return IntakeCoralStatus;
@@ -87,9 +98,7 @@ public class EndeffectorSubsystem extends SubsystemBase{
     }
 
     public void openIntakeArm() {
-        IntakeArmSparkmax.set(0.5);
-
-        
+    m_encoder.setPosition(2);
     }
 
 

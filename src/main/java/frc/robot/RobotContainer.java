@@ -76,6 +76,7 @@ public class RobotContainer {
     private void configureBindings() {
         joystick.a().onTrue(m_EndeffectorSubsystem.runEndEffectorCommand());
         joystick.b().onTrue(m_EndeffectorSubsystem.runIntakeCommand());
+        joystick.x().onTrue(Commands.runOnce((m_EndeffectorSubsystem::openIntakeArm)));
         
         joystick.leftBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::reverseIntakeWheels)));
         joystick.rightBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::runIntakeWheels)));
