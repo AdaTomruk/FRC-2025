@@ -88,7 +88,10 @@ public class EndeffectorSubsystem extends SubsystemBase{
 
     public void openIntakeArm() {
         IntakeArmSparkmax.set(0.5);
+
+        
     }
+
 
 }
 

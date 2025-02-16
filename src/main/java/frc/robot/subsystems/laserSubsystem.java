@@ -16,7 +16,7 @@ public class laserSubsystem extends SubsystemBase {
 
 
     try {
-      // Configure FLaser
+      // Configure FLaser.
       fLaser.setRangingMode(LaserCan.RangingMode.SHORT);
       fLaser.setRegionOfInterest(new LaserCan.RegionOfInterest(8, 8, 16, 16));
       fLaser.setTimingBudget(LaserCan.TimingBudget.TIMING_BUDGET_33MS);
