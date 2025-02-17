@@ -133,6 +133,18 @@ public class ElevetorSubsystem extends SubsystemBase{
     public ElevatorState getState() {
         return mPeriodicIO.state;
       }
+
+    public void setElevatorPositionPositive(double power) {
+        mPeriodicIO.elevator_power = power;
+        mPeriodicIO.is_elevator_pos_control = false;
+    }
+    public void setElevatorPositionNegative(double power) {
+        mPeriodicIO.elevator_power = power;
+        mPeriodicIO.is_elevator_pos_control = false;
+    }
+    public void setElevetorPoscontrolTrue() {
+        mPeriodicIO.is_elevator_pos_control = true;
+    }
       
     public void goToElevatorStow() {
         mPeriodicIO.is_elevator_pos_control = true;

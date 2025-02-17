@@ -1,21 +1,35 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.AlgaeEndeffector;
 import frc.robot.Constants.CoralEndeffector;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
+
 public class EndeffectorSubsystem extends SubsystemBase{
+
+    private PeriodicIO mPeriodicIO;
 
     private Boolean IntakeCoralStatus = false;
 
@@ -25,16 +39,46 @@ public class EndeffectorSubsystem extends SubsystemBase{
     private SparkMax IntakeWheelsUSparkmax = new SparkMax(AlgaeEndeffector.IntakeWheelsUpperSparkmaxid, MotorType.kBrushless);
     private SparkMax IntakeWheelsLSparkmax = new SparkMax(AlgaeEndeffector.IntakeWheelsLowerSparkmaxid, MotorType.kBrushless);
 
-    private RelativeEncoder m_encoder = IntakeArmSparkmax.getEncoder();
+    private RelativeEncoder IntakeArmEncoder;
 
-    private SparkClosedLoopController m_pidController = IntakeArmSparkmax.getClosedLoopController();
+    private SparkClosedLoopController IntakeArmPIDController; 
 
     laserSubsystem laserSubsystem = new laserSubsystem();
 
     public static boolean IntakeArmStatus = false;
 
+    private TrapezoidProfile TrapezoidProfile;
+    private TrapezoidProfile.State TrapezoidCurState = new TrapezoidProfile.State();
+    private TrapezoidProfile.State TrapezoidGoalState = new TrapezoidProfile.State();
+    private double prevUpdateTime = Timer.getFPGATimestamp();
+
     public EndeffectorSubsystem() {
-        m_pidController.setReference(0, ControlType.kPosition);
+
+        mPeriodicIO = new PeriodicIO();
+
+        SparkMaxConfig IntakeArmConfig = new SparkMaxConfig();
+
+        IntakeArmConfig.closedLoop
+        .pid(Constants.AlgaeEndeffector.kP, Constants.AlgaeEndeffector.kI, Constants.AlgaeEndeffector.kD)
+        .iZone(Constants.AlgaeEndeffector.kIZone);
+
+        IntakeArmConfig.smartCurrentLimit(Constants.AlgaeEndeffector.kMaxCurrent);
+
+        IntakeArmConfig.idleMode(IdleMode.kBrake);
+        IntakeArmConfig.limitSwitch.reverseLimitSwitchEnabled(true);
+
+        IntakeArmEncoder = IntakeArmSparkmax.getEncoder();
+        IntakeArmPIDController = IntakeArmSparkmax.getClosedLoopController();
+
+        IntakeArmSparkmax.configure(
+            IntakeArmConfig,
+            ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters);
+
+            TrapezoidProfile = new TrapezoidProfile(
+                new TrapezoidProfile.Constraints(
+                    Constants.AlgaeEndeffector.kMaxVelocity,
+                    Constants.AlgaeEndeffector.kMaxAcceleration));
     }
 
     public boolean getIntakeCoralStatus() {
@@ -101,13 +145,15 @@ public class EndeffectorSubsystem extends SubsystemBase{
     }
 
     private void openIntakeArm() {
-        m_encoder.setPosition(2);
         IntakeArmStatus = true;
+        mPeriodicIO.state = ArmState.OPEN;
+        mPeriodicIO.arm_target = Constants.AlgaeEndeffector.kArmOpenPosition;
     }
 
     private void closeIntakeArm() {
-        m_encoder.setPosition(2);
         IntakeArmStatus = false;
+        mPeriodicIO.state = ArmState.CLOSE;
+        mPeriodicIO.arm_target = Constants.AlgaeEndeffector.kArmClosedPosition;
     }
 
     public void openCloseIntakeArm() {
@@ -119,7 +165,45 @@ public class EndeffectorSubsystem extends SubsystemBase{
             System.out.println("Opening Intake Arm");
         }
     }
+    //----------------------------------------------------------------------------------------------------
 
+    public enum ArmState {
+        OPEN,
+        CLOSE
+      }
+
+    private static class PeriodicIO {
+        double arm_target = 0.0;
+    
+        boolean is_arm_pos_control = true;
+    
+        ArmState state = ArmState.CLOSE;
+      }
+
+    //----------------------------------------------------------------------------------------------------
+
+    public void writePeriodicOutputs() {
+        double curTime = Timer.getFPGATimestamp();
+        double dt = curTime - prevUpdateTime;
+        prevUpdateTime = curTime;
+        if(mPeriodicIO.is_arm_pos_control){
+            TrapezoidGoalState.position = mPeriodicIO.arm_target;
+            prevUpdateTime = curTime;
+            TrapezoidCurState = TrapezoidProfile.calculate(dt, TrapezoidCurState, TrapezoidGoalState);
+
+            IntakeArmPIDController.setReference(
+                TrapezoidCurState.position,            // Target position
+                SparkBase.ControlType.kPosition,       // Use position control
+                ClosedLoopSlot.kSlot0,                 // Use default PID slot
+                Constants.Elevator.kG,                 // Feedforward voltage (gravity compensation)
+                ArbFFUnits.kVoltage);                  // Feedforward unit in volts
+        }
+    }
+
+    @Override
+    public void periodic(){
+        writePeriodicOutputs();
+    }
 
 }
 
