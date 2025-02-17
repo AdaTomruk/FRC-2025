@@ -2,8 +2,8 @@ package frc.robot;
 
 public class Constants {
     public static class CoralEndeffector {
-        public static final int LEndeffectorSparkmaxId = 16;
-        public static final int REndeffectorSparkmaxId = 19;
+        public static final int LeftEndeffectorSparkmaxId = 16;
+        public static final int RightEndeffectorSparkmaxId = 19;
         
         public static final double IntakeSpeed = 0.3;
         public static final double kL1Speed = 0.4;
@@ -16,17 +16,52 @@ public class Constants {
     }
     public static class AlgaeEndeffector{
         public static final int IntakeArmSparkmaxid = 20;
-        public static final int IntakeWheelsUSparkmaxid = 21;
-        public static final int IntakeWheelsLSparkmaxid = 22;
+        public static final int IntakeWheelsUpperSparkmaxid = 21;
+        public static final int IntakeWheelsLowerSparkmaxid = 22;
 
         public static final double IntakeWheelSpeed = 0.5;
         public static final double IntakeWheelReverseSpeed = -0.5;
         public static final double IntakeArmSpeed = 0.5;
         public static final double IntakeArmPosition = 0;
+
+        public static final double kP = 0.15;
+        public static final double kI = 0;
+        public static final double kD = 0.0;
+        public static final double kIZone = 5.0;
+        public static final double kG = 0.5;
+
+        public static final double kMaxVelocity = 65;
+        public static final double kMaxAcceleration = 200;
+
+        public static final int kMaxCurrent = 40;
+
+        public static final double kArmClosedPosition = 0.0;
+        public static final double kArmOpenPosition = 15.0;
     }
-    public static class Elevetor{
-        public static final int ElevetorLSparkmaxId = 23;
-        public static final int ElevetorRSparkmaxId = 24;
+    public static class Elevator{
+        public static final int ElevetorLeftSparkmaxId = 23;
+        public static final int ElevetorRightSparkmaxId = 24;
+
+        public static final double kP = 0.15;
+        public static final double kI = 0;
+        public static final double kD = 0.0;
+        public static final double kIZone = 5.0;
+        public static final double kG = 0.5;
+
+        public static final double kMaxVelocity = 65;
+        public static final double kMaxAcceleration = 200;
+
+        public static final int kMaxCurrent = 40;
+
+        public static final double kStowHeight = 0.0;
+        public static final double kL2Height = 9.0;
+        public static final double kL3Height = 25.14;
+        public static final double kL4Height = 52.0;
+        public static final double kMaxHeight = 56.2;
+        public static final double kGroundAlgaeHeight = 0.0;
+        public static final double kScoreAlgaeHeight = 0.0;
+        public static final double kLowAlgaeHeight = 24.8;
+        public static final double kHighAlgaeHeight = 42.5;
     }
     public static class Leds{
 

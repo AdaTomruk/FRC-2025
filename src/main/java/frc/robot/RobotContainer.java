@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ElevetorSubsystem;
 import frc.robot.subsystems.EndeffectorSubsystem;
 
 public class RobotContainer {
@@ -25,7 +27,7 @@ public class RobotContainer {
 
     //instantiates the robot container
     private EndeffectorSubsystem m_EndeffectorSubsystem = new EndeffectorSubsystem(); 
-
+    private ElevetorSubsystem m_ElevetorSubsystem = new ElevetorSubsystem(); 
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -74,14 +76,21 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        //Button dpadDownButton = new Button(() -> driverController.getPOV() == 180);
+
         joystick.a().onTrue(m_EndeffectorSubsystem.runEndEffectorCommand());
         joystick.b().onTrue(m_EndeffectorSubsystem.runIntakeCommand());
-        joystick.x().onTrue(Commands.runOnce((m_EndeffectorSubsystem::openIntakeArm)));
+        joystick.x().onTrue(Commands.runOnce((m_EndeffectorSubsystem::openCloseIntakeArm)));
         
         joystick.leftBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::reverseIntakeWheels)));
         joystick.rightBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::runIntakeWheels)));
         joystick.rightBumper().onFalse(Commands.runOnce((m_EndeffectorSubsystem::stopIntakeWheels)));
         joystick.leftBumper().onFalse(Commands.runOnce((m_EndeffectorSubsystem::stopIntakeWheels)));
+
+        joystick.pov(0).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToElevatorStow)));
+        joystick.pov(90).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToprivateLevel2)));
+        joystick.pov(180).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToprivateLevel3)));
+        joystick.pov(270).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToElevatorL4)));
 
 
     }

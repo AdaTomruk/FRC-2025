@@ -19,17 +19,19 @@ public class EndeffectorSubsystem extends SubsystemBase{
 
     private Boolean IntakeCoralStatus = false;
 
-    SparkMax LEndeffectorSparkmax = new SparkMax(CoralEndeffector.LEndeffectorSparkmaxId, MotorType.kBrushless);
-    SparkMax REndeffectorSparkmax = new SparkMax(CoralEndeffector.REndeffectorSparkmaxId, MotorType.kBrushless);
-    SparkMax IntakeArmSparkmax = new SparkMax(AlgaeEndeffector.IntakeArmSparkmaxid, MotorType.kBrushless);
-    SparkMax IntakeWheelsUSparkmax = new SparkMax(AlgaeEndeffector.IntakeWheelsUSparkmaxid, MotorType.kBrushless);
-    SparkMax IntakeWheelsLSparkmax = new SparkMax(AlgaeEndeffector.IntakeWheelsLSparkmaxid, MotorType.kBrushless);
+    private SparkMax LEndeffectorSparkmax = new SparkMax(CoralEndeffector.LeftEndeffectorSparkmaxId, MotorType.kBrushless);
+    private SparkMax REndeffectorSparkmax = new SparkMax(CoralEndeffector.RightEndeffectorSparkmaxId, MotorType.kBrushless);
+    private SparkMax IntakeArmSparkmax = new SparkMax(AlgaeEndeffector.IntakeArmSparkmaxid, MotorType.kBrushless);
+    private SparkMax IntakeWheelsUSparkmax = new SparkMax(AlgaeEndeffector.IntakeWheelsUpperSparkmaxid, MotorType.kBrushless);
+    private SparkMax IntakeWheelsLSparkmax = new SparkMax(AlgaeEndeffector.IntakeWheelsLowerSparkmaxid, MotorType.kBrushless);
 
     private RelativeEncoder m_encoder = IntakeArmSparkmax.getEncoder();
 
     private SparkClosedLoopController m_pidController = IntakeArmSparkmax.getClosedLoopController();
 
     laserSubsystem laserSubsystem = new laserSubsystem();
+
+    public static boolean IntakeArmStatus = false;
 
     public EndeffectorSubsystem() {
         m_pidController.setReference(0, ControlType.kPosition);
@@ -98,8 +100,24 @@ public class EndeffectorSubsystem extends SubsystemBase{
         IntakeWheelsLSparkmax.set(0);
     }
 
-    public void openIntakeArm() {
-    m_encoder.setPosition(2);
+    private void openIntakeArm() {
+        m_encoder.setPosition(2);
+        IntakeArmStatus = true;
+    }
+
+    private void closeIntakeArm() {
+        m_encoder.setPosition(2);
+        IntakeArmStatus = false;
+    }
+
+    public void openCloseIntakeArm() {
+        if (IntakeArmStatus) {
+            closeIntakeArm();
+            System.out.println("Closing Intake Arm");
+        } else {
+            openIntakeArm();
+            System.out.println("Opening Intake Arm");
+        }
     }
 
 
