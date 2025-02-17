@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.ConfigurationFailedException;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Laser;
 
 
 public class laserSubsystem extends SubsystemBase {
@@ -11,8 +12,8 @@ public class laserSubsystem extends SubsystemBase {
 
 
   public laserSubsystem() {
-    fLaser = new LaserCan(0); // Front Laser
-    bLaser = new LaserCan(1); // Back Laser
+    fLaser = new LaserCan(Laser.fLaserId); // Front Laser
+    bLaser = new LaserCan(Laser.bLaserId); // Back Laser
 
 
     try {

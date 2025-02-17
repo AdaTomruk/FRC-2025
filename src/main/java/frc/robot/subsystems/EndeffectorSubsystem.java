@@ -6,9 +6,10 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AlgaeEndeffector;
+import frc.robot.Constants.CoralEndeffector;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 
@@ -18,11 +19,11 @@ public class EndeffectorSubsystem extends SubsystemBase{
 
     private Boolean IntakeCoralStatus = false;
 
-    SparkMax LEndeffectorSparkmax = new SparkMax(16, MotorType.kBrushless);
-    SparkMax REndeffectorSparkmax = new SparkMax(19, MotorType.kBrushless);
-    SparkMax IntakeArmSparkmax = new SparkMax(20, MotorType.kBrushless);
-    SparkMax IntakeWheelsUSparkmax = new SparkMax(21, MotorType.kBrushless);
-    SparkMax IntakeWheelsLSparkmax = new SparkMax(22, MotorType.kBrushless);
+    SparkMax LEndeffectorSparkmax = new SparkMax(CoralEndeffector.LEndeffectorSparkmaxId, MotorType.kBrushless);
+    SparkMax REndeffectorSparkmax = new SparkMax(CoralEndeffector.REndeffectorSparkmaxId, MotorType.kBrushless);
+    SparkMax IntakeArmSparkmax = new SparkMax(AlgaeEndeffector.IntakeArmSparkmaxid, MotorType.kBrushless);
+    SparkMax IntakeWheelsUSparkmax = new SparkMax(AlgaeEndeffector.IntakeWheelsUSparkmaxid, MotorType.kBrushless);
+    SparkMax IntakeWheelsLSparkmax = new SparkMax(AlgaeEndeffector.IntakeWheelsLSparkmaxid, MotorType.kBrushless);
 
     private RelativeEncoder m_encoder = IntakeArmSparkmax.getEncoder();
 
@@ -43,8 +44,8 @@ public class EndeffectorSubsystem extends SubsystemBase{
     }
 
     public void runIntake() {
-        LEndeffectorSparkmax.set(0.5);
-        REndeffectorSparkmax.set(0.5);
+        LEndeffectorSparkmax.set(CoralEndeffector.IntakeSpeed);
+        REndeffectorSparkmax.set(CoralEndeffector.IntakeSpeed);
         if (laserSubsystem.logFrontLaserMeasurement() < 40) {
             IntakeCoralStatus = true;
             stopIntake();
@@ -61,8 +62,8 @@ public class EndeffectorSubsystem extends SubsystemBase{
     }
 
     public void runEndEffector() {
-        LEndeffectorSparkmax.set(0.5);
-        REndeffectorSparkmax.set(0.5);
+        LEndeffectorSparkmax.set(CoralEndeffector.kL1Speed);
+        REndeffectorSparkmax.set(CoralEndeffector.kL1Speed);
         if (laserSubsystem.logBackLaserMeasurement() > 40) {
             IntakeCoralStatus = false;
             stopEndEffector();
@@ -85,12 +86,12 @@ public class EndeffectorSubsystem extends SubsystemBase{
     //----------------------------------------------------------------------------------------------------
 
     public void runIntakeWheels() {
-        IntakeWheelsUSparkmax.set(0.5);
-        IntakeWheelsLSparkmax.set(0.5);
+        IntakeWheelsUSparkmax.set(AlgaeEndeffector.IntakeWheelSpeed);
+        IntakeWheelsLSparkmax.set(AlgaeEndeffector.IntakeWheelSpeed);
     }
     public void reverseIntakeWheels() {
-        IntakeWheelsUSparkmax.set(-0.5);
-        IntakeWheelsLSparkmax.set(-0.5);
+        IntakeWheelsUSparkmax.set(AlgaeEndeffector.IntakeWheelReverseSpeed);
+        IntakeWheelsLSparkmax.set(AlgaeEndeffector.IntakeWheelReverseSpeed);
     }
     public void stopIntakeWheels() {
         IntakeWheelsUSparkmax.set(0);
