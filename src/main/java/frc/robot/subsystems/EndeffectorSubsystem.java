@@ -5,8 +5,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.AlgaeEndeffector;
@@ -43,6 +41,9 @@ public class EndeffectorSubsystem extends SubsystemBase{
     laserSubsystem laserSubsystem = new laserSubsystem();
 
     public static boolean IntakeArmStatus = false;
+
+    public static boolean IntakeStatus = false;
+    public static boolean EndEffectorStatus = false;
 
     private TrapezoidProfile TrapezoidProfile;
     private TrapezoidProfile.State TrapezoidCurState = new TrapezoidProfile.State();
@@ -82,20 +83,17 @@ public class EndeffectorSubsystem extends SubsystemBase{
         return IntakeCoralStatus;
       }
 
-    public Command runIntakeCommand() {
-        return (run(() -> {runIntake();}));
-    }
-
     public void runIntake() {
         LEndeffectorSparkmax.set(CoralEndeffector.IntakeSpeed);
         REndeffectorSparkmax.set(CoralEndeffector.IntakeSpeed);
         if (laserSubsystem.logFrontLaserMeasurement() < 40) {
             IntakeCoralStatus = true;
+            IntakeStatus = false;
             stopIntake();
         }
         else{
             IntakeCoralStatus = false;
-            ScheduleCommand scheduleCommand = new ScheduleCommand(runIntakeCommand());scheduleCommand.schedule();
+            IntakeStatus = false;
         }
     }
 
@@ -109,11 +107,14 @@ public class EndeffectorSubsystem extends SubsystemBase{
         REndeffectorSparkmax.set(CoralEndeffector.kL1Speed);
         if (laserSubsystem.logBackLaserMeasurement() > 40) {
             IntakeCoralStatus = false;
+            EndEffectorStatus = true;
             stopEndEffector();
+            System.out.println("EndEffector Stoped");
         }
         else{
             IntakeCoralStatus = true;
-            ScheduleCommand scheduleCommand = new ScheduleCommand(runEndEffectorCommand());scheduleCommand.schedule();            
+            EndEffectorStatus = false;
+            System.out.println("EndEffector Running");
         }
     }
 
@@ -122,9 +123,16 @@ public class EndeffectorSubsystem extends SubsystemBase{
         REndeffectorSparkmax.set(0);
     }
 
-    public Command runEndEffectorCommand() {
-        return (run(() -> {runEndEffector();}));
+    public void runPeriodicOutputsEndeffector() {
+        if(IntakeStatus){
+            runIntake();
+        }
+        else if(EndEffectorStatus){
+            runEndEffector();
+        }
     }
+
+    
     
     //----------------------------------------------------------------------------------------------------
 
@@ -140,6 +148,8 @@ public class EndeffectorSubsystem extends SubsystemBase{
         IntakeWheelsUSparkmax.set(0);
         IntakeWheelsLSparkmax.set(0);
     }
+
+    //----------------------------------------------------------------------------------------------------
 
     private void openIntakeArm() {
         IntakeArmStatus = true;
@@ -162,7 +172,6 @@ public class EndeffectorSubsystem extends SubsystemBase{
             System.out.println("Opening Intake Arm");
         }
     }
-    //----------------------------------------------------------------------------------------------------
 
     public enum ArmState {
         OPEN,
@@ -179,7 +188,7 @@ public class EndeffectorSubsystem extends SubsystemBase{
 
     //----------------------------------------------------------------------------------------------------
 
-    public void writePeriodicOutputs() {
+    public void writePeriodicOutputsArm() {
         double curTime = Timer.getFPGATimestamp();
         double dt = curTime - prevUpdateTime;
         prevUpdateTime = curTime;
@@ -199,7 +208,8 @@ public class EndeffectorSubsystem extends SubsystemBase{
 
     @Override
     public void periodic(){
-        writePeriodicOutputs();
+        writePeriodicOutputsArm();
+        runPeriodicOutputsEndeffector();
     }
 
 }

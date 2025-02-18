@@ -52,14 +52,14 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed*m_ElevetorSubsystem.robotSpeedCoefficient) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed*m_ElevetorSubsystem.robotSpeedCoefficient) // Drive left with negative X (left)
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+        //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        //joystick.b().whileTrue(drivetrain.applyRequest(() ->point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -77,8 +77,8 @@ public class RobotContainer {
     private void configureBindings() {
         //Button dpadDownButton = new Button(() -> driverController.getPOV() == 180);
 
-        joystick.a().onTrue(m_EndeffectorSubsystem.runEndEffectorCommand());
-        joystick.b().onTrue(m_EndeffectorSubsystem.runIntakeCommand());
+        joystick.a().onTrue(Commands.runOnce((m_EndeffectorSubsystem::runEndEffector)));
+        joystick.b().onTrue(Commands.runOnce((m_EndeffectorSubsystem::runIntake)));
         joystick.x().onTrue(Commands.runOnce((m_EndeffectorSubsystem::openCloseIntakeArm)));
         
         joystick.leftBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::reverseIntakeWheels)));

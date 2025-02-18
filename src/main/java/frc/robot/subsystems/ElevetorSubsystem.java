@@ -43,6 +43,8 @@ public class ElevetorSubsystem extends SubsystemBase{
 
     private laserSubsystem laserSubsystem = new laserSubsystem();
 
+    public static double robotSpeedCoefficient = 1.0;
+
     public ElevetorSubsystem() {
 
         mPeriodicIO = new PeriodicIO();
@@ -146,34 +148,40 @@ public class ElevetorSubsystem extends SubsystemBase{
         mPeriodicIO.is_elevator_pos_control = true;
         mPeriodicIO.elevator_target = Constants.Elevator.kStowHeight;
         mPeriodicIO.state = ElevatorState.STOW;
+        robotSpeedCoefficient = 1.0;
     }
     private void goToElevatorL2() {
         mPeriodicIO.is_elevator_pos_control = true;
         mPeriodicIO.elevator_target = Constants.Elevator.kL2Height;
         mPeriodicIO.state = ElevatorState.L2;
+        robotSpeedCoefficient = Constants.Elevator.kDrivetrainL2ElevetorHeightDriveSpeedCoefficient;
       }
       private void goToElevatorL3() {
         mPeriodicIO.is_elevator_pos_control = true;
         mPeriodicIO.elevator_target = Constants.Elevator.kL3Height;
         mPeriodicIO.state = ElevatorState.L3;
+        robotSpeedCoefficient = Constants.Elevator.kDrivetrainL3ElevetorHeightDriveSpeedCoefficient;
       }
     
       public void goToElevatorL4() {
         mPeriodicIO.is_elevator_pos_control = true;
         mPeriodicIO.elevator_target = Constants.Elevator.kL4Height;
         mPeriodicIO.state = ElevatorState.L4;
+        robotSpeedCoefficient = Constants.Elevator.kDrivetrainL4ElevetorHeightDriveSpeedCoefficient;
       }
     
       private void goToElevatorAlgaeLow() {
         mPeriodicIO.is_elevator_pos_control = true;
         mPeriodicIO.elevator_target = Constants.Elevator.kLowAlgaeHeight;
         mPeriodicIO.state = ElevatorState.A1;
+        robotSpeedCoefficient = Constants.Elevator.kDrivetrainAlgaeLowElevetorHeightDriveSpeedCoefficient;
       }
     
       private void goToElevatorAlgaeHigh() {
         mPeriodicIO.is_elevator_pos_control = true;
         mPeriodicIO.elevator_target = Constants.Elevator.kHighAlgaeHeight;
         mPeriodicIO.state = ElevatorState.A2;
+        robotSpeedCoefficient = Constants.Elevator.kDrivetrainAlgaeHighElevetorHeightDriveSpeedCoefficient;
       }
 
       public void goToprivateLevel2() {

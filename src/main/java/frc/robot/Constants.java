@@ -62,6 +62,12 @@ public class Constants {
         public static final double kScoreAlgaeHeight = 0.0;
         public static final double kLowAlgaeHeight = 24.8;
         public static final double kHighAlgaeHeight = 42.5;
+
+        public static final double kDrivetrainL2ElevetorHeightDriveSpeedCoefficient = 0.5;
+        public static final double kDrivetrainL3ElevetorHeightDriveSpeedCoefficient = 0.5;
+        public static final double kDrivetrainL4ElevetorHeightDriveSpeedCoefficient = 0.5;
+        public static final double kDrivetrainAlgaeLowElevetorHeightDriveSpeedCoefficient = 0.5;
+        public static final double kDrivetrainAlgaeHighElevetorHeightDriveSpeedCoefficient = 0.5;
     }
     public static class Leds{
 
