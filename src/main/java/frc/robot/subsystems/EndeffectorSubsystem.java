@@ -21,6 +21,10 @@ import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class EndeffectorSubsystem extends SubsystemBase{
 
@@ -51,6 +55,9 @@ public class EndeffectorSubsystem extends SubsystemBase{
     private double prevUpdateTime = Timer.getFPGATimestamp();
 
     public EndeffectorSubsystem() {
+
+        SmartDashboard.putNumber("Intake Arm Open Position", Constants.AlgaeEndeffector.kArmOpenPosition);
+        SmartDashboard.putNumber("Intake Arm Closed Position", Constants.AlgaeEndeffector.kArmClosedPosition);
 
         mPeriodicIO = new PeriodicIO();
 
@@ -210,6 +217,16 @@ public class EndeffectorSubsystem extends SubsystemBase{
     public void periodic(){
         writePeriodicOutputsArm();
         runPeriodicOutputsEndeffector();
+
+        SmartDashboard.putBoolean("Intake Arm Status", IntakeArmStatus);
+        SmartDashboard.putBoolean("Intake Status", IntakeStatus);
+        SmartDashboard.putBoolean("EndEffector Status", EndEffectorStatus);
+        SmartDashboard.putNumber("Intake Arm Position", TrapezoidCurState.position);
+        SmartDashboard.putString("Coral Status", IntakeCoralStatus.toString());
+
+        Constants.AlgaeEndeffector.kArmOpenPosition = SmartDashboard.getNumber("Intake Arm Open Position", Constants.AlgaeEndeffector.kArmOpenPosition);
+        Constants.AlgaeEndeffector.kArmClosedPosition = SmartDashboard.getNumber("Intake Arm Closed Position", Constants.AlgaeEndeffector.kArmClosedPosition);
+
     }
 
 }

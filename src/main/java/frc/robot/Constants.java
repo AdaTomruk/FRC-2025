@@ -35,8 +35,8 @@ public class Constants {
 
         public static final int kMaxCurrent = 40;
 
-        public static final double kArmClosedPosition = 0.0;
-        public static final double kArmOpenPosition = 15.0;
+        public static  double kArmClosedPosition = 0.0;
+        public static  double kArmOpenPosition = 15.0;
     }
     public static class Elevator{
         public static final int ElevetorLeftSparkmaxId = 17;
@@ -53,15 +53,16 @@ public class Constants {
 
         public static final int kMaxCurrent = 40;
 
-        public static final double kStowHeight = 0.0;
-        public static final double kL2Height = 9.0;
-        public static final double kL3Height = 25.14;
-        public static final double kL4Height = 52.0;
-        public static final double kMaxHeight = 56.2;
-        public static final double kGroundAlgaeHeight = 0.0;
-        public static final double kScoreAlgaeHeight = 0.0;
-        public static final double kLowAlgaeHeight = 24.8;
-        public static final double kHighAlgaeHeight = 42.5;
+        public static final double kMinHeight = 0.0;
+        public static  double kStowHeight = 0.0;
+        public static  double kL2Height = 9.0;
+        public static  double kL3Height = 25.14;
+        public static  double kL4Height = 52.0;
+        public static  double kMaxHeight = 56.2;
+        public static  double kGroundAlgaeHeight = 0.0;
+        public static  double kScoreAlgaeHeight = 0.0;
+        public static  double kLowAlgaeHeight = 24.8;
+        public static  double kHighAlgaeHeight = 42.5;
 
         public static final double kDrivetrainL2ElevetorHeightDriveSpeedCoefficient = 0.5;
         public static final double kDrivetrainL3ElevetorHeightDriveSpeedCoefficient = 0.5;

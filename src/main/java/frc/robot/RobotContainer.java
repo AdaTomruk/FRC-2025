@@ -91,7 +91,7 @@ public class RobotContainer {
         joystick.pov(180).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToprivateLevel3)));
         joystick.pov(270).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToElevatorL4)));
 
-        joystick.rightTrigger().onTrue(Commands.runOnce(() -> m_ElevetorSubsystem.setElevatorPositionPositive(joystick.getRightTriggerAxis())));
+        joystick.rightTrigger().onTrue(Commands.runOnce(() -> m_ElevetorSubsystem.setElevatorPositionPositive(-joystick.getRightTriggerAxis())));
         joystick.leftTrigger().onTrue(Commands.runOnce(() -> m_ElevetorSubsystem.setElevatorPositionNegative(joystick.getLeftTriggerAxis())));
         joystick.rightTrigger().onFalse(Commands.runOnce(() -> m_ElevetorSubsystem.setElevetorPoscontrolTrue()));
         joystick.leftTrigger().onFalse(Commands.runOnce(() -> m_ElevetorSubsystem.setElevetorPoscontrolTrue()));
