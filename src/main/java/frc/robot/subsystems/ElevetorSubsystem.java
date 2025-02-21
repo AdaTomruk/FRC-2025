@@ -49,6 +49,8 @@ public class ElevetorSubsystem extends SubsystemBase{
 
     public static double robotSpeedCoefficient = 1.0;
 
+    public boolean isElevetorActive = false;
+
     public ElevetorSubsystem() {
 
         SmartDashboard.putNumber("Stow Height", Constants.Elevator.kStowHeight);
@@ -138,6 +140,12 @@ public class ElevetorSubsystem extends SubsystemBase{
     public void periodic(){
         writePeriodicOutputs();
         smartdashboardPeriodic();
+        if(TrapezoidCurState.position==mPeriodicIO.elevator_target){
+            isElevetorActive = false;
+        }
+        else{
+            isElevetorActive = true;
+        }
     }
 
     public void smartdashboardPeriodic(){
