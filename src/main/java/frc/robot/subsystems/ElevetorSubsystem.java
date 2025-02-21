@@ -136,7 +136,7 @@ public class ElevetorSubsystem extends SubsystemBase{
         mPeriodicIO.elevator_power = power;
         mPeriodicIO.is_elevator_pos_control = false;
     }
-    public void setElevatorPositionNegative(double power) {
+    public void setElevatorPositionNegative(double power) { 
         mPeriodicIO.elevator_power = power;
         mPeriodicIO.is_elevator_pos_control = false;
     }
