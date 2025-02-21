@@ -16,8 +16,8 @@ public class Constants {
     }
     public static class AlgaeEndeffector{
         public static final int IntakeArmSparkmaxid = 20;
-        public static final int IntakeWheelsUpperSparkmaxid = 21;
-        public static final int IntakeWheelsLowerSparkmaxid = 22;
+        public static final int IntakeWheelsUpperSparkmaxid = 17;
+        public static final int IntakeWheelsLowerSparkmaxid = 18;
 
         public static final double IntakeWheelSpeed = 0.5;
         public static final double IntakeWheelReverseSpeed = -0.5;
@@ -39,8 +39,8 @@ public class Constants {
         public static  double kArmOpenPosition = 15.0;
     }
     public static class Elevator{
-        public static final int ElevetorLeftSparkmaxId = 17;
-        public static final int ElevetorRightSparkmaxId = 18;
+        public static final int ElevetorLeftSparkmaxId = 21;
+        public static final int ElevetorRightSparkmaxId = 22;
 
         public static final double kP = 0.15;
         public static final double kI = 0;
