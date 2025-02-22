@@ -5,14 +5,14 @@ public class Constants {
         public static final int LeftEndeffectorSparkmaxId = 16;
         public static final int RightEndeffectorSparkmaxId = 19;
         
-        public static final double IntakeSpeed = 0.3;
-        public static final double kL1Speed = 0.4;
+        public static final double IntakeSpeed = 0.2;
+        public static final double kL1Speed = 0.2;
         public static final double kL23Speed = 0.4;
         public static final double kL4Speed = 0.4;
     }
     public static class Laser{
-        public static final int fLaserId = 0;
-        public static final int bLaserId = 1;
+        public static final int fLaserId = 23;
+        public static final int bLaserId = 24;
     }
     public static class AlgaeEndeffector{
         public static final int IntakeArmSparkmaxid = 20;
