@@ -110,8 +110,8 @@ public class EndeffectorSubsystem extends SubsystemBase{
     }
 
     public void runEndEffector() {
-        LEndeffectorSparkmax.set(CoralEndeffector.kL1Speed);
-        REndeffectorSparkmax.set(-CoralEndeffector.kL1Speed);
+        LEndeffectorSparkmax.setVoltage(CoralEndeffector.kL1RSpeed);
+        REndeffectorSparkmax.setVoltage(-CoralEndeffector.kL1LSpeed);
         if (laserSubsystem.logFrontLaserMeasurement() > 40) {
             IntakeCoralStatus = false;
             EndEffectorStatus = false;

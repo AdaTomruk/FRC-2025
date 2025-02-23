@@ -6,8 +6,10 @@ public class Constants {
         public static final int RightEndeffectorSparkmaxId = 19;
         
         public static final double IntakeSpeed = 0.2;
-        public static final double kL1Speed = 0.2;
-        public static final double kL23Speed = 0.4;
+        public static final double kL1LSpeed = 0.2;
+        public static final double kL1RSpeed = 0.2;
+        public static final double kL2Speed = 0.4;
+        public static final double kL3Speed = 0.4;
         public static final double kL4Speed = 0.4;
 
         public static final double kP = 0.15;
@@ -15,6 +17,7 @@ public class Constants {
         public static final double kD = 0.0;
         public static final double kIZone = 5.0;
         public static final double kG = 0.5;
+        
         public static final double kMaxVelocity = 65;
         public static final double kMaxAcceleration = 200;
     }
@@ -32,6 +35,7 @@ public class Constants {
         public static final double IntakeArmSpeed = 0.5;
         public static final double IntakeArmPosition = 0;
 
+        //Alge arm PID
         public static final double kP = 0.15;
         public static final double kI = 0;
         public static final double kD = 0.0;
@@ -40,6 +44,16 @@ public class Constants {
 
         public static final double kMaxVelocity = 65;
         public static final double kMaxAcceleration = 200;
+
+        //Alge wheel PID
+        public static final double kBP = 0.15;
+        public static final double kBI = 0;
+        public static final double kBD = 0.0;
+        public static final double kBIZone = 5.0;
+        public static final double kBG = 0.5;
+
+        public static final double kBMaxVelocity = 65;
+        public static final double kBMaxAcceleration = 200;
 
         public static final int kMaxCurrent = 40;
 
