@@ -9,9 +9,13 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-import choreo.auto.AutoChooser;
-import choreo.auto.AutoFactory;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
+
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -43,13 +47,18 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
-    private final AutoFactory autoFactory;
-    private final AutoRoutines autoRoutines;
-    private final AutoChooser autoChooser = new AutoChooser();
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    
+    /* Path follower */
+    private final SendableChooser<Command> autoChooser;
+    
 
     public RobotContainer() {
+        autoChooser = AutoBuilder.buildAutoChooser("Tests");
+        SmartDashboard.putData("Auto Mode", autoChooser);
+
+        new EventTrigger("a").toggleOnTrue(CoralCommands.scoreL4(m_ElevetorSubsystem, m_EndeffectorSubsystem));
+
         configureBindings();
         configureSwerveBindings();
         autoFactory = drivetrain.createAutoFactory();
@@ -113,6 +122,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.selectedCommand();
+
+        return autoChooser.getSelected();
+
     }
 }
