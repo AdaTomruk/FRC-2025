@@ -15,7 +15,6 @@ import com.pathplanner.lib.events.EventTrigger;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -27,18 +26,17 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevetorSubsystem;
 import frc.robot.subsystems.EndeffectorSubsystem;
 
-
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.25; // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     //instantiates the robot container
-    public static EndeffectorSubsystem m_EndeffectorSubsystem = new EndeffectorSubsystem(); 
-    public static ElevetorSubsystem m_ElevetorSubsystem = new ElevetorSubsystem(); 
+    private EndeffectorSubsystem m_EndeffectorSubsystem = new EndeffectorSubsystem(); 
+    private ElevetorSubsystem m_ElevetorSubsystem = new ElevetorSubsystem(); 
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDeadband(MaxSpeed * 0.25).withRotationalDeadband(MaxAngularRate * 0.25) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -52,7 +50,6 @@ public class RobotContainer {
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
     
-
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -61,11 +58,6 @@ public class RobotContainer {
 
         configureBindings();
         configureSwerveBindings();
-        autoFactory = drivetrain.createAutoFactory();
-        autoFactory.bind("Score", CoralCommands.scoreL4(m_ElevetorSubsystem, m_EndeffectorSubsystem));
-        autoRoutines = new AutoRoutines(autoFactory);
-        autoChooser.addRoutine("SimplePath", autoRoutines::simplePathAuto);
-        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     private void configureSwerveBindings() {
@@ -74,9 +66,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(joystick.getLeftY() * MaxSpeed*m_ElevetorSubsystem.robotSpeedCoefficient) // Drive forward with negative Y (forward)
-                    .withVelocityY(joystick.getLeftX() * MaxSpeed*m_ElevetorSubsystem.robotSpeedCoefficient) // Drive left with negative X (left)
-                    .withRotationalRate(joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed*m_ElevetorSubsystem.robotSpeedCoefficient) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed*m_ElevetorSubsystem.robotSpeedCoefficient) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -122,8 +114,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-
         return autoChooser.getSelected();
-
     }
 }
