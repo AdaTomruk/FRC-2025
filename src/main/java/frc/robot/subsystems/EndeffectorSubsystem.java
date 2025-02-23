@@ -92,7 +92,7 @@ public class EndeffectorSubsystem extends SubsystemBase{
 
     public void runIntake() {
         LEndeffectorSparkmax.set(CoralEndeffector.IntakeSpeed);
-        REndeffectorSparkmax.set(CoralEndeffector.IntakeSpeed);
+        REndeffectorSparkmax.set(-CoralEndeffector.IntakeSpeed);
         if (laserSubsystem.logFrontLaserMeasurement() < 40) {
             IntakeCoralStatus = true;
             IntakeStatus = false;
@@ -100,7 +100,7 @@ public class EndeffectorSubsystem extends SubsystemBase{
         }
         else{
             IntakeCoralStatus = false;
-            IntakeStatus = false;
+            IntakeStatus = true;
         }
     }
 
@@ -111,16 +111,16 @@ public class EndeffectorSubsystem extends SubsystemBase{
 
     public void runEndEffector() {
         LEndeffectorSparkmax.set(CoralEndeffector.kL1Speed);
-        REndeffectorSparkmax.set(CoralEndeffector.kL1Speed);
-        if (laserSubsystem.logBackLaserMeasurement() > 40) {
+        REndeffectorSparkmax.set(-CoralEndeffector.kL1Speed);
+        if (laserSubsystem.logFrontLaserMeasurement() > 40) {
             IntakeCoralStatus = false;
-            EndEffectorStatus = true;
+            EndEffectorStatus = false;
             stopEndEffector();
             System.out.println("EndEffector Stoped");
         }
         else{
             IntakeCoralStatus = true;
-            EndEffectorStatus = false;
+            EndEffectorStatus = true;
             System.out.println("EndEffector Running");
         }
     }
@@ -134,7 +134,7 @@ public class EndeffectorSubsystem extends SubsystemBase{
         if(IntakeStatus){
             runIntake();
         }
-        else if(EndEffectorStatus){
+        if(EndEffectorStatus){
             runEndEffector();
         }
     }

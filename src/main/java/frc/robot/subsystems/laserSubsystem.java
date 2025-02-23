@@ -39,7 +39,7 @@ public class laserSubsystem extends SubsystemBase {
         return measurement.distance_mm;
     } else {
       //System.out.println("Front Laser: Oh no! The target is out of range or unreliable!");
-        return 0;
+        return 110;
     }
   }
 
@@ -51,7 +51,7 @@ public class laserSubsystem extends SubsystemBase {
         return measurement.distance_mm;
     } else {
       //System.out.println("Back Laser: Oh no! The target is out of range or unreliable!");
-        return 0;
+        return 110;
     }
   }
 
