@@ -9,6 +9,14 @@ public class Constants {
         public static final double kL1Speed = 0.2;
         public static final double kL23Speed = 0.4;
         public static final double kL4Speed = 0.4;
+
+        public static final double kP = 0.15;
+        public static final double kI = 0;
+        public static final double kD = 0.0;
+        public static final double kIZone = 5.0;
+        public static final double kG = 0.5;
+        public static final double kMaxVelocity = 65;
+        public static final double kMaxAcceleration = 200;
     }
     public static class Laser{
         public static final int fLaserId = 23;
@@ -47,7 +55,6 @@ public class Constants {
         public static final double kD = 0.0;
         public static final double kIZone = 5.0;
         public static final double kG = 0.5;
-
         public static final double kMaxVelocity = 65;
         public static final double kMaxAcceleration = 200;
 
