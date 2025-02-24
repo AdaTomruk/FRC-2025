@@ -95,10 +95,15 @@ public class RobotContainer {
         joystick.b().onTrue(Commands.runOnce((m_EndeffectorSubsystem::runIntake)));
         joystick.x().onTrue(Commands.runOnce((m_EndeffectorSubsystem::openCloseIntakeArm)));
         
+        /*
+        Old code for intake wheels control, not used in the current version
         joystick.leftBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::reverseIntakeWheels)));
         joystick.rightBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::runIntakeWheels)));
         joystick.rightBumper().onFalse(Commands.runOnce((m_EndeffectorSubsystem::stopIntakeWheels)));
         joystick.leftBumper().onFalse(Commands.runOnce((m_EndeffectorSubsystem::stopIntakeWheels)));
+        */
+        joystick.rightBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::runIntakeWheels)));
+        joystick.rightBumper().onFalse(Commands.runOnce((m_EndeffectorSubsystem::stopIntakeWheels)));
 
         joystick.pov(0).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToElevatorStow)));
         joystick.pov(90).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToprivateLevel2)));

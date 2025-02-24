@@ -20,6 +20,8 @@ public class Constants {
         
         public static final double kMaxVelocity = 65;
         public static final double kMaxAcceleration = 200;
+
+        public static final int kMaxCurrent = 40;
     }
     public static class Laser{
         public static final int fLaserId = 23;
@@ -27,11 +29,11 @@ public class Constants {
     }
     public static class AlgaeEndeffector{
         public static final int IntakeArmSparkmaxid = 20;
-        public static final int IntakeWheelsUpperSparkmaxid = 17;
-        public static final int IntakeWheelsLowerSparkmaxid = 18;
+        public static final int IntakeWheelUpperSparkmaxid = 17;
+        public static final int IntakeWheelLowerSparkmaxid = 18;
 
-        public static final double IntakeWheelSpeed = 0.5;
-        public static final double IntakeWheelReverseSpeed = -0.5;
+        public static final double IntakeWheelPower = 0.5; //Should be positive, between 0 and 1 (for PID manual control multipler)
+        public static final double IntakeWheelReverseAmount = 0.5; //Should be positive
         public static final double IntakeArmSpeed = 0.5;
         public static final double IntakeArmPosition = 0;
 
@@ -45,6 +47,8 @@ public class Constants {
         public static final double kMaxVelocity = 65;
         public static final double kMaxAcceleration = 200;
 
+        public static final int kMaxCurrent = 40;
+
         //Alge wheel PID
         public static final double kBP = 0.15;
         public static final double kBI = 0;
@@ -55,7 +59,7 @@ public class Constants {
         public static final double kBMaxVelocity = 65;
         public static final double kBMaxAcceleration = 200;
 
-        public static final int kMaxCurrent = 40;
+        public static final int kBMaxCurrent = 40;
 
         public static  double kArmClosedPosition = 0.0;
         public static  double kArmOpenPosition = 15.0;
