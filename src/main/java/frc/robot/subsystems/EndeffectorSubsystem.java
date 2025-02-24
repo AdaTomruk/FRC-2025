@@ -359,10 +359,11 @@ public class EndeffectorSubsystem extends SubsystemBase{
         }
     }
 
-    public enum ArmState {
+    public enum ArmState 
+    {
         OPEN,
         CLOSE
-      }
+        }
 
     private static class PeriodicIO {
         double arm_target = 0.0;
