@@ -32,6 +32,12 @@ This repository contains the robot code for the 2025 FRC season. The robot is de
 - **Encoders**: Precise position feedback on all motorized mechanisms
 - **Gyroscope**: Pigeon 2 IMU for drivetrain field orientation
 
+### Android Client Integration
+- **WebSocket Server**: Real-time communication with Android companion apps
+- **Focus Mode**: Special operating mode with notifications to connected clients
+- **JSON API**: Structured message format for robot status updates
+- See [WEBSOCKET_API.md](WEBSOCKET_API.md) for complete WebSocket API documentation
+
 ## Controls
 
 ### Driver Controller (Xbox Controller - Port 0)
@@ -45,15 +51,19 @@ This repository contains the robot code for the 2025 FRC season. The robot is de
 - **A Button**: Run End Effector (score coral/algae) 
 - **B Button**: Run Intake System (collect game pieces)
 - **X Button**: Open/Close Intake Arm
+- **Left Bumper**: Toggle Focus Mode (sends notification to Android clients)
+- **Right Bumper**: Run Intake Wheels
 
 #### Elevator Control
 - **D-Pad**: Quick elevator positioning
   - Up: Level 4 position
   - Down: Stow position
   - Left/Right: Level 2/3 positions
+- **Triggers**: Manual elevator position control
 
 ### SmartDashboard Controls
 Real-time tuning parameters available on SmartDashboard:
+- **Focus Mode**: Toggle to enable/disable focus mode (broadcasts to Android clients)
 - Elevator target heights for all levels
 - Intake arm open/closed positions
 - PID tuning parameters for all subsystems
@@ -79,6 +89,10 @@ Real-time tuning parameters available on SmartDashboard:
 #### Testing & Utilities
 - **JUnit 5** (v5.10.1): Unit testing framework
 - **WPILib New Commands**: Command-based robot framework
+
+#### Communication Libraries
+- **Java-WebSocket** (v1.5.3): WebSocket server for Android client communication
+- **Gson** (v2.10.1): JSON serialization for message formatting
 
 ### Hardware Requirements
 - RoboRIO 2.0

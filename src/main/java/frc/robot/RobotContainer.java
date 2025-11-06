@@ -104,6 +104,9 @@ public class RobotContainer {
         */
         joystick.rightBumper().onTrue(Commands.runOnce((m_EndeffectorSubsystem::runIntakeWheels)));
         joystick.rightBumper().onFalse(Commands.runOnce((m_EndeffectorSubsystem::stopIntakeWheels)));
+        
+        // Focus mode toggle - toggles the focus mode state on SmartDashboard
+        joystick.leftBumper().onTrue(Commands.runOnce(this::toggleFocusMode));
 
         joystick.pov(0).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToElevatorStow)));
         joystick.pov(90).onTrue(Commands.runOnce((m_ElevetorSubsystem::goToprivateLevel2)));
@@ -120,5 +123,15 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
-    }   
+    }
+    
+    /**
+     * Toggle focus mode state on SmartDashboard
+     * This will be detected by Robot.robotPeriodic() and broadcast to Android clients
+     */
+    private void toggleFocusMode() {
+        boolean currentState = SmartDashboard.getBoolean("Focus Mode", false);
+        SmartDashboard.putBoolean("Focus Mode", !currentState);
+        System.out.println("Focus Mode toggled to: " + !currentState);
+    }
 }
