@@ -98,4 +98,9 @@ public class Constants {
     public static class Leds{
 
     }
+    
+    public static class WebSocketServer {
+        public static final int kServerPort = 5810;
+        public static final String kFocusModeMessageType = "focus_mode";
+    }
 }

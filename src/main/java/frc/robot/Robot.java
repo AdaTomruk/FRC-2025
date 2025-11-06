@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -15,14 +16,46 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
 
   private final boolean kUseLimelight = false;
+  
+  // WebSocket server for Android client communication
+  private RobotWebSocketServer m_webSocketServer;
+  
+  // Focus mode state
+  private boolean m_focusModeEnabled = false;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    
+    // Initialize WebSocket server
+    try {
+      m_webSocketServer = new RobotWebSocketServer(Constants.WebSocketServer.kServerPort);
+      m_webSocketServer.start();
+      System.out.println("WebSocket server started on port " + Constants.WebSocketServer.kServerPort);
+    } catch (Exception e) {
+      System.err.println("Failed to start WebSocket server: " + e.getMessage());
+      e.printStackTrace();
+    }
+    
+    // Add focus mode to SmartDashboard for control
+    SmartDashboard.putBoolean("Focus Mode", false);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    
+    // Check for focus mode changes from SmartDashboard
+    boolean focusModeFromDashboard = SmartDashboard.getBoolean("Focus Mode", false);
+    if (focusModeFromDashboard != m_focusModeEnabled) {
+      m_focusModeEnabled = focusModeFromDashboard;
+      
+      // Broadcast focus mode change to all Android clients
+      if (m_webSocketServer != null) {
+        m_webSocketServer.broadcastFocusMode(m_focusModeEnabled);
+      }
+      
+      System.out.println("Focus Mode " + (m_focusModeEnabled ? "ENABLED" : "DISABLED"));
+    }
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.
@@ -95,4 +128,41 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationPeriodic() {}
+  
+  @Override
+  public void close() {
+    // Clean up WebSocket server
+    if (m_webSocketServer != null) {
+      try {
+        m_webSocketServer.stop();
+        System.out.println("WebSocket server stopped");
+      } catch (Exception e) {
+        System.err.println("Error stopping WebSocket server: " + e.getMessage());
+      }
+    }
+    super.close();
+  }
+  
+  /**
+   * Manually set focus mode and broadcast to Android clients
+   * 
+   * @param enabled Whether focus mode should be enabled
+   */
+  public void setFocusMode(boolean enabled) {
+    m_focusModeEnabled = enabled;
+    SmartDashboard.putBoolean("Focus Mode", enabled);
+    
+    if (m_webSocketServer != null) {
+      m_webSocketServer.broadcastFocusMode(enabled);
+    }
+  }
+  
+  /**
+   * Get the current focus mode state
+   * 
+   * @return true if focus mode is enabled
+   */
+  public boolean isFocusModeEnabled() {
+    return m_focusModeEnabled;
+  }
 }
